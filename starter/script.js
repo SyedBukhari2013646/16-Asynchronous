@@ -51,27 +51,27 @@ const countriesContainer = document.querySelector('.countries');
 
 ///////////////////////////////////////////
 // Render country
-// const renderCountry = function (data, countryName = '') {
-//   const html = ` <article class="country ${countryName}">
-// <img class="country__img" src="${data.flags.png}" />
-// <div class="country__data">
-//   <h3 class="country__name">${data.name.common}</h3>
-//   <h4 class="country__region">${data.region}</h4>
-//   <p class="country__row"><span>👫</span>${(
-//     +data.population / 10000000
-//   ).toFixed(1)}</p>
-//   <p class="country__row"><span>🗣️</span>${Object.values(data.languages).join(
-//     ', '
-//   )}</p>
-//   <p class="country__row"><span>💰</span>${Object.values(data.currencies)
-//     .map(curr => curr.name)
-//     .join(', ')}</p>
-// </div>
-// </article>`;
+const renderCountry = function (data, countryName = '') {
+  const html = ` <article class="country ${countryName}">
+<img class="country__img" src="${data.flags.png}" />
+<div class="country__data">
+  <h3 class="country__name">${data.name.common}</h3>
+  <h4 class="country__region">${data.region}</h4>
+  <p class="country__row"><span>👫</span>${(
+    +data.population / 10000000
+  ).toFixed(1)}</p>
+  <p class="country__row"><span>🗣️</span>${Object.values(data.languages).join(
+    ', '
+  )}</p>
+  <p class="country__row"><span>💰</span>${Object.values(data.currencies)
+    .map(curr => curr.name)
+    .join(', ')}</p>
+</div>
+</article>`;
 
-//   countriesContainer.insertAdjacentHTML('beforeend', html);
-//   countriesContainer.style.opacity = 1;
-// };
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+};
 
 ////////////////////////////////////////////
 // Get neighbouring countries
@@ -122,3 +122,36 @@ const countriesContainer = document.querySelector('.countries');
 
 const request = fetch('https://restcountries.com/v3.1/name/pakistan');
 console.log(request);
+
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.com/v3.1/name/${country}`)
+//     .then(function (response) {
+//       console.log(response);
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//       renderCountry(data[0]);
+//     });
+// };
+
+//////////////////////////////////////////////
+// Promises look a lot more cleaner and beautifull then the other
+const getCountryData = function (country) {
+  // Country 1
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(response => response.json())
+    .then(data => {
+      renderCountry(data[0], 'neighbour');
+      const neighbour = data[0].borders;
+
+      if (!neighbour) return;
+
+      return neighbour.forEach(code => {
+        fetch(`https://restcountries.com/v3.1/alpha?codes=${code}`)
+          .then(responce => responce.json())
+          .then(data => renderCountry(data[0], 'neighbour'));
+      });
+    });
+};
+getCountryData('bharat');
