@@ -228,3 +228,8 @@ const getCountryData = function (country) {
 btn.addEventListener('click', function () {
   getCountryData('australia');
 });
+
+// Attach listener once
+btn.addEventListener('click', function () {
+  getCountryData('australia');
+});
