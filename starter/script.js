@@ -7,7 +7,7 @@ const countriesContainer = document.querySelector('.countries');
 // Render country
 const renderCountry = function (data, countryName = '') {
   const html = ` <article class="country ${countryName}">
-<img class="country__img" src="${data.flags.png}" />
+<img class="country__img" src="${data.flags?.png || data.flags?.svg}" />
 <div class="country__data">
   <h3 class="country__name">${data.name.common}</h3>
   <h4 class="country__region">${data.region}</h4>
@@ -144,13 +144,13 @@ const renderError = function (msg) {
 //////////////////////////////////////////////
 // Promises look a lot more cleaner and beautifull then the other
 
-// const getJSON = function (url, errorMsg = 'Somethibg went wrong') {
-//   return fetch(url).then(response => {
-//     if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+const getJSON = function (url, errorMsg = 'Somethibg went wrong') {
+  return fetch(url).then(response => {
+    if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
 
-//     return response.json();
-//   });
-// };
+    return response.json();
+  });
+};
 // const getCountryData = function (country) {
 //   // Country 1
 //   fetch(`https://restcountries.com/v3.1/name/${country}`)
@@ -409,47 +409,167 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 GOOD LUCK 😀
 */
 
-let currentImg;
+// let currentImg;
 
-const createImage = function (imgPath) {
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const img = document.createElement('img');
+//     img.src = imgPath;
+
+//     // When img is done loading
+//     img.addEventListener('load', function () {
+//       document.body.append(img);
+//       resolve(img);
+//     });
+
+//     // When img is failed
+//     img.addEventListener('abort', function () {
+//       reject(new Error(`Img not found ${imgPath}`));
+//     });
+//   });
+// };
+
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     currentImg = img;
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImg = img;
+//   })
+//   .then(img => {
+//     currentImg.style.display = 'none';
+//   })
+//   .catch(err => {
+//     console.error(err);
+//   });
+
+///////////////////////////////////////
+// Consuming promise with ASYNC/AWAIT
+
+const getPosition = function () {
   return new Promise(function (resolve, reject) {
-    const img = document.createElement('img');
-    img.src = imgPath;
-
-    // When img is done loading
-    img.addEventListener('load', function () {
-      document.body.append(img);
-      resolve(img);
-    });
-
-    // When img is failed
-    img.addEventListener('abort', function () {
-      reject(new Error(`Img not found ${imgPath}`));
-    });
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 };
 
-const wait = function (seconds) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, seconds * 1000);
-  });
-};
+// const whereAmI = async function () {
+//   // Geolocation API
+//   const pos = await getPosition();
+//   const { latitude: lat, longitude: lng } = pos.coords;
 
-createImage('img/img-1.jpg')
-  .then(img => {
-    currentImg = img;
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-    return createImage('img/img-2.jpg');
-  })
-  .then(img => {
-    currentImg = img;
-  })
-  .then(img => {
-    currentImg.style.display = 'none';
-  })
-  .catch(err => {
-    console.error(err);
-  });
+//   // Reverse geoCode
+//   const resGeo = await fetch(
+//     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+//   );
+//   const dataGeo = await resGeo.json();
+//   console.log(dataGeo);
+
+//   // Getting country data
+//   const res = await fetch(
+//     `https://restcountries.com/v3.1/name/${dataGeo.countryName}`
+//   );
+
+//   const data = await res.json();
+//   console.log(data);
+//   renderCountry(data[0]);
+
+//   // console.log(res);
+// };
+
+// whereAmI();
+// console.log('First');
+
+///////////////////////////////////////
+// TRY/CATCH error
+// try {
+//   let y = 4;
+//   const x = 3;
+//   x += 4;
+// } catch (err) {
+//   alert(`BSDK sahe say kar naa ${err.message}`);
+// }
+
+// const whereAmI = async function () {
+//   try {
+//     // Geolocation API
+//     const pos = await getPosition();
+//     const { latitude: lat, longitude: lng } = pos.coords;
+
+//     // Reverse geoCode
+//     const resGeo = await fetch(
+//       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+//     );
+//     const dataGeo = await resGeo.json();
+//     console.log(dataGeo);
+//     if (!resGeo.ok) throw new Error('Problem getting location data');
+
+//     // Getting country data
+//     const res = await fetch(
+//       `https://restcountries.com/v3.1/name/${dataGeo.countryName}`
+//     );
+//     if (!resGeo.ok) throw new Error('Problem getting location data');
+//     const data = await res.json();
+//     console.log(data);
+//     renderCountry(data[0]);
+
+//     return `You are in ${dataGeo.city}, ${dataGeo.countryName}`;
+//   } catch (err) {
+//     console.error(`${err} 💥`);
+//     renderError(`Something went wrong 💥 ${err.message}`);
+
+//     // Reject proimise returned from the async function
+//     throw err;
+//   }
+// };
+
+// console.log('1: Will get location');
+// // const city = whereAmI();
+// // console.log(city);
+// whereAmI()
+//   .then(city => console.log(city))
+//   .catch(err => console.error(`${err}`))
+//   .finally(() => console.log('3: Finish getting location'));
+
+// (async function () {
+//   try {
+//     const city = await whereAmI();
+//     console.log(`2: ${city}`);
+//   } catch (err) {
+//     console.error(`${err}`);
+//   }
+//   console.log('3: Finish getting location');
+// })();
+
+// const get3Countries = async function (c1, c2, c3) {
+//   try {
+// const [data1] = await getJSON(`https://restcountries.com/v3.1/name/${c1}`);
+// const [data2] = await getJSON(`https://restcountries.com/v3.1/name/${c2}`);
+// const [data3] = await getJSON(`https://restcountries.com/v3.1/name/${c3}`);
+// console.log(data1.capital, data2.capital, data3.capital);
+
+//     const data = await Promise.all([
+//       getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+//       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+//       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+//     ]);
+//     console.log(data.map(d => d[0].capital));
+//   } catch (err) {
+//     console.error(`${err.message}`);
+//   }
+// };
+
+// get3Countries('pakistan', 'bharat', 'palestine');
+
+/////////////////////////////////////////////
+// Other Promise combinator
