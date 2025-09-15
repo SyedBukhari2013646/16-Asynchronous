@@ -1285,3 +1285,35 @@ v3.1/name/${c3}`);
 //   }
 // };
 
+const data = await Promise.all([
+  //       getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+  //       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+  //       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+  //     ]);
+  //     console.log(data.map(d => d[0].capital));
+  //   } catch (err) {
+  //     console.error(`${err.message}`);
+  //   }
+  // };
+  const data = await Promise.all([
+    //       getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+    //       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+    //       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+    //     ]);
+    //     console.log(data.map(d => d[0].capital));
+    //   } catch (err) {
+    //     console.error(`${err.message}`);
+    //   }
+    // };
+    const data = await Promise.all([
+      //       getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+      //       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+      //       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+      //     ]);
+      //     console.log(data.map(d => d[0].capital));
+      //   } catch (err) {
+      //     console.error(`${err.message}`);
+      //   }
+      // };
+            
+
