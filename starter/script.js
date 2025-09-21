@@ -1243,4 +1243,4 @@ v3.1/name/${c3}`);
 //       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
 //       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
 //     ]);
-//     console.log(data.map(d => d[0].capital));
+//     console.log(data.map(d => d[0].capital));ggfsdbsrsgsgsrbgbbgeb
