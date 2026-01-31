@@ -3,7 +3,7 @@
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
-///////////////////////////////////////////
+/////////////////////////////////////ibuhbuhbuhbu//////
 // Render country
 const renderCountry = function (data, countryName = '') {
   const html = ` <article class="country ${countryName}">
